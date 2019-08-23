@@ -1179,6 +1179,7 @@ void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, int
 }
 
 // Draw a triangle
+// NOTE: Vertex must be provided in counter-clockwise order
 void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 {
     if (rlCheckBufferLimit(4)) rlglDraw();
@@ -1214,6 +1215,7 @@ void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 }
 
 // Draw a triangle using lines
+// NOTE: Vertex must be provided in counter-clockwise order
 void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 {
     if (rlCheckBufferLimit(6)) rlglDraw();
@@ -1232,7 +1234,7 @@ void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 }
 
 // Draw a triangle fan defined by points
-// NOTE: First point provided is shared by all triangles
+// NOTE: First vertex provided is the center, shared by all triangles
 void DrawTriangleFan(Vector2 *points, int pointsCount, Color color)
 {
     if (pointsCount >= 3)
@@ -1263,7 +1265,7 @@ void DrawTriangleFan(Vector2 *points, int pointsCount, Color color)
 }
 
 // Draw a triangle strip defined by points
-// NOTE: Every new point connects with previous two
+// NOTE: Every new vertex connects with previous two
 void DrawTriangleStrip(Vector2 *points, int pointsCount, Color color)
 {
     if (pointsCount >= 3)
@@ -1390,8 +1392,8 @@ bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2)
 {
     bool collision = false;
 
-    if ((rec1.x <= (rec2.x + rec2.width) && (rec1.x + rec1.width) >= rec2.x) &&
-        (rec1.y <= (rec2.y + rec2.height) && (rec1.y + rec1.height) >= rec2.y)) collision = true;
+    if ((rec1.x < (rec2.x + rec2.width) && (rec1.x + rec1.width) > rec2.x) &&
+        (rec1.y < (rec2.y + rec2.height) && (rec1.y + rec1.height) > rec2.y)) collision = true;
 
     return collision;
 }
